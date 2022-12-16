@@ -8,7 +8,7 @@ function ToDoList() {
     } = event;
     setToDo(value);
   };
- const hi = [];
+ 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(toDo);
