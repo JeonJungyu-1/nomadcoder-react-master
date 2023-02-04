@@ -1,5 +1,26 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React from "react";
+import { useRecoilValue } from "recoil";
+import { toDoState } from "../atoms";
+import CreateTodo from "./CreateToDo";
+import ToDo from "./ToDo";
+
+function ToDoList() {
+  const toDos = useRecoilValue(toDoState);
+  return (
+    <div>
+      <h1>To Dos</h1>
+      <hr />
+      <CreateTodo />
+      <ul>
+        {toDos.map((toDo) => (
+          <ToDo key={toDo.id} {...toDo} />
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default ToDoList;
 
 // function ToDoList() {
 //   const [toDo, setToDo] = useState("");
@@ -118,29 +139,3 @@ import { useForm } from "react-hook-form";
 //     </div>
 //   );
 // }
-
-interface IForm {
-  toDO: string;
-}
-
-function ToDoList() {
-  const { register, handleSubmit, setValue } = useForm<IForm>();
-  const handleValid = (data: IForm) => {
-    console.log("add to do", data.toDO);
-    setValue("toDO", "");
-  };
-
-  return (
-    <div>
-      <form onSubmit={handleSubmit(handleValid)}>
-        <input
-          {...register("toDO", { required: "Please write a To Do" })}
-          placeholder="Write a to do"
-        />
-        <button>Add</button>
-      </form>
-    </div>
-  );
-}
-
-export default ToDoList;
