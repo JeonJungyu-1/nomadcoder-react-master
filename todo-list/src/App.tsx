@@ -1,6 +1,7 @@
 import React from "react";
 import { createGlobalStyle } from "styled-components";
 import ToDoList from "./components/ToDoList";
+import { darkTheme } from "./theme";
 
 
 const GlobalStyle = createGlobalStyle`
@@ -53,8 +54,8 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-weight: 300;
     font-family: 'Source Sans Pro', sans-serif;
-    background-color: ${(props) => props?.theme?.bgColor};
-    color: ${(props) => props?.theme?.textColor};
+    background-color: ${(props) => props.theme.bgColor};
+    color: ${(props) => props.theme.textColor};
     line-height: 1.2;
   }
   a {
@@ -66,7 +67,7 @@ const GlobalStyle = createGlobalStyle`
 function App() {
   return (
     <>
-        <GlobalStyle />
+        <GlobalStyle theme={darkTheme} />
         <ToDoList />
     </>
   );
