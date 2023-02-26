@@ -1,8 +1,9 @@
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import styled from "styled-components";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { toDoState } from "./atoms";
 import Board from "./Components/Board";
+import { useForm } from "react-hook-form";
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,6 +23,27 @@ const Boards = styled.div`
   width: 100%;
   gap: 10px;
 `;
+
+const Form = styled.form`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 10px;
+  input {
+    font-size: 16px;
+    border: 0;
+    background-color: white;
+    width: 80%;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin: 0 auto;
+  }
+`;
+
+interface IForm {
+  board: string;
+}
 
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
@@ -56,11 +78,29 @@ function App() {
           [destination.droppableId]: destinationBoard,
         };
       });
-    }
+    }    
   };
+
+  const onValid = ({ board }: IForm) => {
+    // 보드 타입 추가
+    setToDos((allBoards) => {
+      return {
+        ...allBoards,
+        [board]: [],
+      };
+    });
+  };
+  const { register, setValue, handleSubmit } = useForm<IForm>();
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
+      <Form onSubmit={handleSubmit(onValid)}>
+        <input
+          {...register("board", { required: true })}
+          type="text"
+          placeholder={`Add board`}
+        />
+      </Form>
       <Wrapper>
         <Boards>
           {Object.keys(toDos).map((boardId) => (
